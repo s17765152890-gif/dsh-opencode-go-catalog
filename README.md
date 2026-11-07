@@ -1,5 +1,7 @@
 # dsh-opencode-go-catalog
 
+![OpenCode Go 单一分组，组头右侧「⟳ 更新模型」按钮](assets/hero.png)
+
 DeepSeek Harness 插件：让 **OpenCode Go** 的模型清单跟随官方目录自动更新。
 
 OpenCode Go 会不断上架新模型、下架旧模型（官方文档原话 "The list of models may change as we test and add new ones"）。而 DSH 的 pi-ai 路由只服务配置里列出的模型，且每个模型用哪种协议由 pi-ai **内置目录**决定——新模型它还不认识。
@@ -64,7 +66,7 @@ curl -H "cookie: <已登录会话>" http://127.0.0.1:<port>/x-opencode-go-catalo
 # -> { ok, last: { ok, trigger, catalog, total, added, removed, refreshed, error? }, lastWrite, settings }
 ```
 
-`lastLastWrite.added/removed/refreshed` 给出最近一次写入的确切变化。
+`lastWrite.added/removed/refreshed` 给出最近一次写入的确切变化。
 
 ## 回退
 
@@ -74,3 +76,4 @@ curl -H "cookie: <已登录会话>" http://127.0.0.1:<port>/x-opencode-go-catalo
 ## 许可证
 
 MIT
+
