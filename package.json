@@ -1,0 +1,26 @@
+{
+  "name": "dsh-opencode-go-catalog",
+  "version": "0.3.0",
+  "description": "DeepSeek Harness plugin: keep the single OpenCode Go provider route in sync with the provider's public model catalog (startup, interval, and one-click refresh).",
+  "license": "MIT",
+  "type": "module",
+  "main": "index.mjs",
+  "exports": {
+    ".": "./index.mjs",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.mjs",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "engines": {
+    "dsh": ">=0.2.0-rc.2"
+  }
+}

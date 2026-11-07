@@ -1,0 +1,12 @@
+# Bundle patch: mount the catalog sync as one Host row.
+#
+# Configure per-profile settings under `config`, for example:
+#
+#   - id: opencode-go-catalog
+#     name: dsh-opencode-go-catalog
+#     config:
+#       intervalMinutes: 180
+#       keep: [some-pinned-model-id]
+- insert:
+    - id: opencode-go-catalog
+      name: "dsh-opencode-go-catalog"
