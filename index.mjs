@@ -217,10 +217,15 @@ export async function apply(ctx, config = {}) {
     }, 'opencode-go-catalog: interval sync');
   }
 
-  const webServer = ctx.get('webServer');
-  const connection = ctx.get('connection');
-  if (webServer !== undefined && connection !== undefined) {
-    ctx.effect(() => webServer.register({
+  // Register the refresh route the moment both HTTP services exist.
+  //
+  // A top-level `ctx.get('webServer')` guard only works when this row happens to
+  // load *after* the Web bundle: when it loads first, the services are still
+  // absent, the guard silently skips registration, and the model menu's update
+  // button then reports "更新失败" because its request answers 404. Declaring the
+  // services through `ctx.inject` makes registration independent of load order.
+  ctx.inject(['webServer', 'connection'], (scope) => {
+    scope.effect(() => scope.webServer.register({
       kind: 'exact',
       path: '/x-opencode-go-catalog',
       handler: async (req, res) => {
@@ -233,7 +238,7 @@ export async function apply(ctx, config = {}) {
           });
           res.end(body);
         };
-        const rejection = connection.requestRejection(req);
+        const rejection = scope.connection.requestRejection(req);
         if (rejection !== undefined) { res.writeHead(rejection); res.end(); return }
         if (req.method !== 'GET') { send(405, { ok: false, error: 'GET only' }); return }
         const url = new URL(req.url ?? '/x-opencode-go-catalog', 'http://localhost');
@@ -244,7 +249,7 @@ export async function apply(ctx, config = {}) {
         send(200, { ok: true, last: state.last, lastWrite: state.lastWrite, settings: publicSettings() });
       },
     }), 'opencode-go-catalog: sync status route');
-  }
+  });
 
   function publicSettings() {
     return {
